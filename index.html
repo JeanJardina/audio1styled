@@ -2,61 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Custom Audio Player</title>
+  <title>Minimal Audio Player</title>
   <style>
     body {
-      background-color: #f9f9f9;
+      background: transparent;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      font-family: sans-serif;
     }
 
     .player {
-      background: #fff;
-      padding: 20px;
-      border: 2px solid #ccc;
-      border-radius: 0;
+      background: transparent;
+      padding: 0;
       width: 300px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .controls {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 10px;
+      width: 100%;
+      gap: 10px;
     }
 
-    button {
+    .play-button {
       background-color: #2e7d32;
-      color: white;
+      width: 40px;
+      height: 40px;
       border: none;
-      padding: 10px 15px;
-      border-radius: 0;
+      border-radius: 50%;
       cursor: pointer;
+      position: relative;
     }
 
-    button:hover {
-      background-color: #256429;
+    .play-button::before {
+      content: '';
+      position: absolute;
+      left: 14px;
+      top: 10px;
+      border-style: solid;
+      border-width: 10px 0 10px 16px;
+      border-color: transparent transparent transparent white;
+    }
+
+    .play-button.pause::before {
+      content: '';
+      position: absolute;
+      left: 12px;
+      top: 10px;
+      width: 16px;
+      height: 20px;
+      background: white;
+      clip-path: polygon(0 0, 35% 0, 35% 100%, 0% 100%, 0 0, 65% 0, 100% 0, 100% 100%, 65% 100%, 65% 0);
     }
 
     .progress {
       flex: 1;
       height: 6px;
-      margin: 0 10px;
       background: #ddd;
-      position: relative;
       cursor: pointer;
+      position: relative;
+      border-radius: 3px;
     }
 
     .progress-filled {
-      height: 100%;
       background: #2e7d32;
+      height: 100%;
       width: 0%;
+      border-radius: 3px;
     }
   </style>
 </head>
@@ -69,7 +86,7 @@
     </audio>
 
     <div class="controls">
-      <button id="playPause">Play</button>
+      <button class="play-button" id="playPause"></button>
       <div class="progress" id="progress">
         <div class="progress-filled" id="progressFilled"></div>
       </div>
@@ -78,17 +95,17 @@
 
   <script>
     const audio = document.getElementById('audio');
-    const playPause = document.getElementById('playPause');
+    const playPauseBtn = document.getElementById('playPause');
     const progress = document.getElementById('progress');
     const progressFilled = document.getElementById('progressFilled');
 
-    playPause.addEventListener('click', () => {
+    playPauseBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        playPause.textContent = 'Pause';
+        playPauseBtn.classList.add('pause');
       } else {
         audio.pause();
-        playPause.textContent = 'Play';
+        playPauseBtn.classList.remove('pause');
       }
     });
 
