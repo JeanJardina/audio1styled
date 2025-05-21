@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Custom Audio Player</title>
+  <title>Clean Custom Audio Player</title>
   <style>
     body {
       background: transparent;
@@ -29,38 +29,39 @@
     }
 
     .play-button {
-      background-color: #2e7d32;
       width: 40px;
       height: 40px;
+      background-color: #2e7d32;
       border: none;
       border-radius: 50%;
       cursor: pointer;
+      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
     }
 
+    /* Play icon (triangle) */
     .play-button::before {
       content: '';
       display: block;
       width: 0;
       height: 0;
-      border-left: 8px solid white;
+      border-left: 12px solid white;
       border-top: 8px solid transparent;
       border-bottom: 8px solid transparent;
     }
 
+    /* Pause icon (two bars) */
     .play-button.pause::before {
       content: '';
-      display: block;
       width: 12px;
       height: 16px;
       background: white;
-      mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="4" height="18"/><rect x="16" y="3" width="4" height="18"/></svg>') no-repeat center;
-      -webkit-mask: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="3" width="4" height="18"/><rect x="16" y="3" width="4" height="18"/></svg>') no-repeat center;
-      mask-size: contain;
-      -webkit-mask-size: contain;
+      display: flex;
+      mask-image: none;
+      -webkit-mask-image: none;
+      clip-path: polygon(0 0, 30% 0, 30% 100%, 0% 100%, 0 0, 70% 0, 100% 0, 100% 100%, 70% 100%, 70% 0);
     }
 
     .progress {
