@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Fixed Audio Player</title>
+  <title>Perfect Audio Player</title>
   <style>
     body {
       background: transparent;
@@ -35,31 +35,16 @@
       border: none;
       border-radius: 50%;
       cursor: pointer;
-      position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 0;
     }
 
-    /* Play icon (triangle) */
-    .play-button::before {
-      content: '';
-      display: block;
-      width: 0;
-      height: 0;
-      border-left: 16px solid white;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-    }
-
-    /* Pause icon (two bars) */
-    .play-button.pause::before {
-      content: '';
-      width: 12px;
+    .play-button svg {
+      width: 16px;
       height: 16px;
-      background: white;
-      display: block;
-      clip-path: polygon(0 0, 35% 0, 35% 100%, 0% 100%, 0 0, 65% 0, 100% 0, 100% 100%, 65% 100%, 65% 0);
+      fill: white;
     }
 
     .progress {
@@ -88,7 +73,16 @@
     </audio>
 
     <div class="controls">
-      <button class="play-button" id="playPause"></button>
+      <button class="play-button" id="playPause">
+        <!-- Default icon: play -->
+        <svg id="playIcon" viewBox="0 0 24 24">
+          <polygon points="6,4 20,12 6,20"></polygon>
+        </svg>
+        <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+          <rect x="6" y="4" width="4" height="16"></rect>
+          <rect x="14" y="4" width="4" height="16"></rect>
+        </svg>
+      </button>
       <div class="progress" id="progress">
         <div class="progress-filled" id="progressFilled"></div>
       </div>
@@ -98,16 +92,20 @@
   <script>
     const audio = document.getElementById('audio');
     const playPauseBtn = document.getElementById('playPause');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
     const progress = document.getElementById('progress');
     const progressFilled = document.getElementById('progressFilled');
 
     playPauseBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        playPauseBtn.classList.add('pause');
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
       } else {
         audio.pause();
-        playPauseBtn.classList.remove('pause');
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
       }
     });
 
