@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Audio Player</title>
+  <meta charset="UTF-8">
+  <title>Custom Audio Player</title>
   <style>
     body {
       background-color: #f9f9f9;
@@ -10,26 +11,100 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      font-family: sans-serif;
     }
 
-    audio {
-      width: 300px;
-      border-radius: 0; /* square player */
-    }
-
-    audio::-webkit-media-controls-download-button {
-      display: none;
-    }
-
-    audio::-webkit-media-controls-enclosure {
+    .player {
+      background: #fff;
+      padding: 20px;
+      border: 2px solid #ccc;
       border-radius: 0;
+      width: 300px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    button {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 0;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #256429;
+    }
+
+    .progress {
+      flex: 1;
+      height: 6px;
+      margin: 0 10px;
+      background: #ddd;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .progress-filled {
+      height: 100%;
+      background: #2e7d32;
+      width: 0%;
     }
   </style>
 </head>
 <body>
-  <audio controls controlsList="nodownload">
-    <source src="https://files.elfsightcdn.com/eafe4a4d-3436-495d-b748-5bdce62d911d/8f09e6b6-e310-4681-9c87-f3a5886676ae/Audio-1-The-Messy-Middle.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-  </audio>
+
+  <div class="player">
+    <audio id="audio" preload="metadata">
+      <source src="https://files.elfsightcdn.com/eafe4a4d-3436-495d-b748-5bdce62d911d/8f09e6b6-e310-4681-9c87-f3a5886676ae/Audio-1-The-Messy-Middle.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+
+    <div class="controls">
+      <button id="playPause">Play</button>
+      <div class="progress" id="progress">
+        <div class="progress-filled" id="progressFilled"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playPause = document.getElementById('playPause');
+    const progress = document.getElementById('progress');
+    const progressFilled = document.getElementById('progressFilled');
+
+    playPause.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playPause.textContent = 'Pause';
+      } else {
+        audio.pause();
+        playPause.textContent = 'Play';
+      }
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      progressFilled.style.width = percent + '%';
+    });
+
+    progress.addEventListener('click', (e) => {
+      const width = progress.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+
+      audio.currentTime = (clickX / width) * duration;
+    });
+  </script>
+
 </body>
 </html>
